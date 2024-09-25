@@ -1,13 +1,13 @@
 #include <stdio.h>
 
-int main(void)
+int main()
 {
     float C, K;
 
-    printf("Température en °C : ");
+    printf("TempÃ©rature en Â°C : ");
     scanf("%f", &C);
     K = C + 273.15;
-    printf("La température en K est : %.2f\n");
+    printf("La tempÃ©rature en K est : %.2f\n");
 
     return 0;
 }
