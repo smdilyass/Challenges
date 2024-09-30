@@ -2,12 +2,23 @@
 #include <stdio.h>
 
 int main(){
-    int S, moyenne;
-    int tab[5]={10,5,8,12,16};
-    for(int i=0 ; i<5; i++){
+    int n ;
+    int S;
+    int tab[n];
+    printf("donne un nomber:\n");
+    scanf("%d", &n);
+
+
+    for(int i=0 ; i<n; i++){
+            printf("le nombre des elements\n");
+            scanf("%d",&tab[n]);
+
+    }
+    S = 0;
+    for(int i=0 ; i<n; i++){
         S+=tab[i]; //S = S + tab[i]
     }
-    moyenne = S / 5;
-    printf("la moyennne est est : %d\n",moyenne);
+    printf("la sommes%d\n",S);
+
     return 0;
 }
