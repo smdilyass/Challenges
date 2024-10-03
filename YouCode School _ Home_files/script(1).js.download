@@ -1,0 +1,2 @@
+//Boot
+if(!Cookies.get('app-theme-dark-mode') && Cookies.get('app-theme-dark-mode') != "") Cookies.set('app-theme-dark-mode', 'dark-mode');

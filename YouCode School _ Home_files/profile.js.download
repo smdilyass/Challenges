@@ -1,0 +1,131 @@
+function assignments()
+{
+    sBoardGet('/profile/'+$('#user-name').val()+'/assignments');
+}
+
+
+
+
+
+
+
+
+function randomDate(start, end) {
+    var date = new Date(+start + Math.random() * (end - start));
+    var out = String(date.getFullYear())+ "-";
+    if (date.getMonth() + 1 < 10)
+        out += "0" + String(date.getMonth() + 1);
+    else
+        out += String(date.getMonth() + 1);
+    out += "-";
+    if (date.getDate() < 10)
+        out += "0" + String(date.getDate());
+    else
+        out += String(date.getDate());
+    return out;
+}
+function absenceHeatMap()
+{
+    startReloadPanel('#panel-absence-heatmap');
+    var style = getComputedStyle(document.body);
+    $.ajax({
+        url: '/profile/'+$('#user-name').val()+'/absences',
+        type: 'GET',
+        success: function(result,status) {
+            var absences=JSON.parse(result);
+            $("#cal-heatmap").empty();
+            var cal = new CalHeatMap();
+            cal.init({
+                //itemSelector: "#domain-a",
+                data: absences,
+                domain: "month",
+                subDomain: "day",
+                cellSize: 15,
+                subDomainTextFormat: "%d",
+                start: new Date(2022, 8),
+                startDate: new Date(2021, 1),
+                endDate: new Date(2023, 6),
+                //cellRadius: 10,
+                range: 10,
+                legendColors: {
+                    min: style.getPropertyValue('--bs-light'),//'#efefef',//style.getPropertyValue('--bs-body-bg'),
+                    max: style.getPropertyValue('--bs-light'),//'#efefef',//style.getPropertyValue('--bs-body-bg')
+                },
+                legend: [1,2,3],
+                animationDuration: 0,
+                highlight: new Date(),
+                onComplete: function() {
+                    setTimeout(function () {
+                        setAbsenceColors()
+                    }, 500);
+                },
+                displayLegend: false,
+            });
+
+            $("#minDate-previous").on("click", function(e) {
+                e.preventDefault();
+                if (!cal.previous()) {
+                    alert("No more domains to load");
+                }
+                setAbsenceColors();
+            });
+            
+            $("#minDate-next").on("click", function(e) {
+                e.preventDefault();
+                if (!cal.next()) {
+                    alert("No more domains to load");
+                }
+                setAbsenceColors();
+            });
+        },
+        error: function(result,status,error) {
+            ajaxErrorManager('swal',result);
+        },
+        complete: function(result) {
+            stopReloadPanel('#panel-absence-heatmap');
+        }
+    });
+    
+}
+
+function setAbsenceColors()
+{
+    $("g .r1").attr('fill', "#ffdf26").next().text("Retard");
+    $("g .r2").attr('fill', "#ff9700").next().text("Absence demi journée").next().css('fill', "#FFF");
+    $("g .r3").attr('fill', "#ff3d4f").next().text("Absence journée").next().css('fill', "#FFF");
+    //$("g .highlight").css('stroke', 'green').next().text("Today").next().css('fill', "green");
+}
+
+/* function absenceHeatMap()
+{
+    var events = ( Math.random() * 200 ).toFixed(0);
+    var data = [];
+    for (var i = 0; i < events; i++ ) {
+        var current = new Date();
+        var rndStart = new Date( current.getFullYear() - 1, current.getMonth() - 5, current.getDate() );
+        data.push({
+            count: parseInt( ( Math.random() * 200 ).toFixed(0) ),
+            date: randomDate( rndStart.valueOf(), current.valueOf() )
+        });
+    }
+    $("#cal-heatmap").CalendarHeatmap(data, {
+        //title: "HeatMap",
+			months: 8,
+			lastYear: new Date().getFullYear(),
+			coloring: "electric",
+			legend: {
+				align: "left",
+				minLabel: "Fewer"
+			},
+			weekStartDay: 1,
+			labels: {
+				days: true,
+				custom: {
+					monthLabels: "MMM 'YY"
+				}
+			},
+			tooltips:{
+				show: true
+			}
+    });
+} */

@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1727961119 source:c:\users\youcode\desktop\challenges\project fin sas\main.c
+	<stdio.h>
+	<stdlib.h>
+

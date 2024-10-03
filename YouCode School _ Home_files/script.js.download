@@ -1,0 +1,274 @@
+if ($(".select2").length) $(".select2").select2({width: '100%'});
+if($(".select2-modal").length)
+{
+	$(".select2-modal").each(function () {
+		$(this).select2({
+			dropdownParent: $(this).parent(),
+			width: '100%'
+		});
+	});
+}
+
+if ($(".datepicker").length) $(".datepicker").datepicker({ format: 'YYYY-MM-DD' });
+///////////////////////////////
+function datetimeFormat(datetime)
+{
+	datetime 		= new Date(datetime);
+	CurrentDatetime = new Date();
+    GivenDatetime 	= new Date(datetime);
+	let timestr 	= " à "+padLeadingZeros(datetime.getHours(), 2)+":"+padLeadingZeros(datetime.getMinutes(), 2);
+    
+	if(CurrentDatetime.toDateString() == GivenDatetime.toDateString())	return "Aujourd'hui"+timestr;
+
+	CurrentDatetime.setDate(CurrentDatetime.getDate()+1);
+    if(CurrentDatetime.toDateString() == GivenDatetime.toDateString())	return "Demain"+timestr;
+
+	CurrentDatetime = new Date();
+    GivenDatetime.setDate(GivenDatetime.getDate()+1);
+    if(CurrentDatetime.toDateString() == GivenDatetime.toDateString())	return "Hier"+timestr;
+
+    return datetimeFormatFr(datetime)+timestr;
+}
+function datetimeFormatFr(datetime)
+{
+	datetime = new Date(datetime);
+	let days = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+	return days[datetime.getDay()]+" "+("0"+datetime.getDate()).slice(-2)+"/"+("0"+(datetime.getMonth()+1)).slice(-2)+"/"+datetime.getFullYear();
+}
+///////////////////////////////
+const animateCSS = (element, animation, prefix = 'animate__') =>
+    // We create a Promise and return it
+    new Promise((resolve, reject) => {
+        const animationName = `${animation}`;
+        const node = document.querySelector(element);
+
+        node.classList.add(`${prefix}animated`, animationName);
+
+        // When the animation ends, we clean the classes and resolve the Promise
+        function handleAnimationEnd(event) {
+            event.stopPropagation();
+            node.classList.remove(`${prefix}animated`, animationName);
+            resolve('Animation ended');
+        }
+
+        node.addEventListener('animationend', handleAnimationEnd, {once: true});
+    });
+///////////////////////////////
+Date.prototype.addDays = function(days) {
+    var dat = new Date(this.valueOf())
+    dat.setDate(dat.getDate() + days);
+    return dat;
+}
+
+function getDates(startDate, stopDate)
+{
+    var dateArray = new Array();
+    var currentDate = startDate;
+    while (currentDate <= stopDate)
+	{
+		//PROBLEM TIME SUMMER WHEN -1H, NOT GIVE THE CURRENT DAY
+		//console.log(currentDate);
+		///-1H
+		// currentDate = currentDate.addDays(1);
+		// dateArray.push(currentDate);
+		//+1H
+        dateArray.push(currentDate);
+        currentDate = currentDate.addDays(1);
+    }
+    return dateArray;
+}
+
+function padLeadingZeros(num, size)
+{
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
+}
+
+function formatBytes(a,b=2,k=1024){with(Math){let d=floor(log(a)/log(k));return 0==a?"0 Bytes":parseFloat((a/pow(k,d)).toFixed(max(0,b)))+" "+["Bytes","KB","MB","GB","TB","PB","EB","ZB","YB"][d]}}
+///////////////////////////////
+function startReloadPanel(selector)
+{
+	var t=$(selector).find(".panel-body");
+	$(selector).addClass("panel-loading");
+	$(t).prepend('<div class="panel-loader"><span class="spinner spinner-lg"></span></div>');
+}
+function stopReloadPanel(selector)
+{
+	$(selector).removeClass("panel-loading"),
+	$(selector).find(".panel-loader").remove()
+}
+///////////////////////////////////
+function ajaxNotificationManager(notification_type, result)
+{
+	switch (notification_type)
+	{
+		case 'swal':
+			{
+				if(result.status == 'success')
+				{
+					const Toast = Swal.mixin({
+						toast: true,
+						position: 'top-end',
+						showConfirmButton: false,
+						timer: 1000,
+						timerProgressBar: true,
+						showClass: {
+							popup: 'animate__animated animate__fadeInDown animate__faster'
+						  },
+						didOpen: (toast) => {
+							toast.addEventListener('mouseenter', Swal.stopTimer)
+							toast.addEventListener('mouseleave', Swal.resumeTimer)
+						}
+					})
+				  
+					Toast.fire({
+						icon: result.status,
+						title: result.message
+					})
+				}
+				else
+				{
+					Swal.fire({
+						icon: result.status,
+						title: result.title,
+						text: result.message,
+						//footer: '<a href="">Why do I have this issue?</a>'
+					})
+				}
+				
+			}break;
+	
+		default:
+			{
+				console.log(result);
+			}
+			break;
+	}
+}
+function ajaxErrorManager(notification_type, error)
+{
+	switch (notification_type)
+	{
+		case 'swal':
+		{
+			Swal.fire({
+				icon: 'error',
+				title: "Erreur!",
+				text: "Quelque chose s'est mal passé.\n"+error.status+" "+error.statusText,
+				//footer: '<a href="">Why do I have this issue?</a>'
+			})
+			//swal("Error", "Quelque chose s'est mal passé. veuillez réessayer ou contacter notre équipe d'assistance! \n"+error.status+" "+error.statusText, "error");
+		}
+		break;
+	
+		default:
+		{
+			console.log('result.status: '+error.status);
+			console.log('result.statusText: '+error.statusText);
+			console.log('result.responseText: '+error.responseText);
+		}
+		break;
+	}
+	console.log(error.responseText);
+	
+}
+//////////////////////////
+function confirmManager(message)
+{
+
+}
+
+
+///////////////////////
+function durationFormat(minutes)
+{
+    let str = '';
+    let duration_minutes   = minutes % 60;
+    let duration_hours     = Math.floor(minutes / 60);
+    let duration_days      = Math.floor(duration_hours / 24);
+    duration_hours          = duration_hours % 24;
+    str += (duration_days > 0) ? duration_days + ((duration_days == 1) ? ' jour ' : ' jours ') : '';
+    str += (duration_hours > 0) ? duration_hours + ((duration_hours == 1) ? ' heur ' : ' heurs ') : '';
+    str += (duration_minutes > 0) ? duration_minutes + ((duration_minutes == 1) ? ' minute ' : ' minutes ') : '';
+
+    return str;
+}
+
+function convertJsonColumnDays(repetivive_days_column, lang = 'en')
+{
+    let repetitive_days = repetivive_days_column;
+    if(lang == 'en') return repetitive_days
+
+    let translated_days  = [];
+    let fr_days = {
+        "Monday":"Lundi",
+        "Tuesday":"Mardi",
+        "Wednesday":"Mercredi",
+        "Thursday":"Jeudi",
+        "Friday":"Vendredi",
+        "Saturday":"Samedi",
+        "Sunday":"Dimanche",
+    };
+    for (let day of repetitive_days)
+    {
+        translated_days.push(fr_days[day]);
+    }
+    return translated_days;
+}
+
+//////////////////COUNTDOWN
+/* function startClassroomActivitiesCountDown()
+{
+    let classroom_activity_id   = 0;
+    let activity_datetime_start = new Date();
+    let duration_minutes        = 0;
+    let activity_datetime_end   = new Date();
+    $(".classroom-activity-status").each(function() {
+        classroom_activity_id   =   $(this).attr("classroom_activity_id");
+        activity_datetime_start =   new Date($(this).attr("activity_datetime"));
+        duration_minutes        =   $(this).attr("duration_minutes");
+        activity_datetime_end   =   moment(activity_datetime_start).add(+duration_minutes, 'm').toDate();
+        countDownClassroomActivity(classroom_activity_id, activity_datetime_start, duration_minutes, activity_datetime_end);
+    });
+}
+
+function countDownClassroomActivity(classroom_activity_id, activity_datetime_start, duration_minutes, activity_datetime_end)
+{
+    var timer;
+    function showRemaining() {
+        var now = new Date();
+        var distance_start  = activity_datetime_start - now;
+        var distance_end    = activity_datetime_end - now;
+        if (distance_start < 0)
+        {
+            if(distance_end > 0)
+            {
+                $('.classroom-activity-status-'+classroom_activity_id).html('<code class="text-green-900 bg-lime-100">En cours... '+countDownClassroomActivityFormat(distance_end)+'</code>');
+                $('.classroom-activity-status-progress-'+classroom_activity_id).html('<i class="fas fa-spinner fa-pulse fa-fw"></i> <div class="fs-8px">Doing</div>');
+				return;
+            }
+            $('.classroom-activity-status-'+classroom_activity_id).html('<code class="text-gray-700 bg-gray-100">Terminé</code>');
+            $('.classroom-activity-status-progress-'+classroom_activity_id).html('<i class="fa fa-check-circle text-green fa-fw" title="Doing"></i> <div class="fs-8px">Done</div>');
+            clearInterval(timer);
+            return;
+        }
+        $('.classroom-activity-status-'+classroom_activity_id).html('<code>Débute '+countDownClassroomActivityFormat(distance_start)+'</code>');
+        $('.classroom-activity-status-progress-'+classroom_activity_id).html('<i class="fa fa-check-circle fa-fw" title="Doing"></i> <div class="fs-8px">To do</div>');
+        //$('.classroom-activity-status-progress-'+classroom_activity_id).html('<i class="fas fa-spinner fa-pulse fa-fw" title="Doing"></i> <div class="fs-8px">To do</div>');
+    }
+    timer = setInterval(showRemaining, 1000);
+}
+
+function countDownClassroomActivityFormat(distance)
+{
+    var _second = 1000;
+    var _minute = _second * 60;
+    var _hour   = _minute * 60;
+    var _day    = _hour * 24;
+    var days = Math.floor(distance / _day);
+    var hours = Math.floor((distance % _day) / _hour);
+    var minutes = Math.floor((distance % _hour) / _minute);
+    var seconds = Math.floor((distance % _minute) / _second);
+    return ((days > 0) ? days + ((days == 1) ? ' jour ' : ' jours ') : '' ) + padLeadingZeros(hours,2) + ':' +padLeadingZeros(minutes,2) + ':' +padLeadingZeros(seconds,2);
+} */

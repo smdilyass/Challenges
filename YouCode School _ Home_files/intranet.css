@@ -1,0 +1,113 @@
+/* Custom General Scrollbar */
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+    /* border-radius: 10px; */
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+/* Custom Scrollbar */
+/* Width */
+.scrollbar::-webkit-scrollbar {
+    width: 10px;
+}
+/* Track */
+.scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+/* Handle */
+.scrollbar::-webkit-scrollbar-thumb {
+    background: #888;
+    /* border-radius: 10px; */
+}
+/* Handle on hover */
+.scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+/* Overflow y */
+.overflow-y {
+    overflow-y: auto !important;
+}
+
+/* ********************* */
+.account-profile-photo
+{
+    border-radius: 100%;
+    /* border: 2px solid #e9e9e9; */
+    /* --bs-body-bg */
+    border: 7px solid var(--bs-light); 
+    width: 75px;
+    height: 75px;
+    margin: auto;
+    position: relative;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.classroom-trainer-photo
+{
+    border-radius: 100%;
+    width: 75px;
+    height: 75px;
+    border: 6px solid var(--app-component-bg);
+    /* margin: auto; */
+    position: relative;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.classroom-delegate-photo
+{
+    border-radius: 100%;
+    width: 45px;
+    height: 45px;
+    border: 6px solid var(--app-component-bg);
+    position: relative;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.cover-image:hover
+{
+    opacity: 0.5;
+}
+
+.readonly {cursor: no-drop;}
+.form-select:disabled, .form-select[readonly]
+{
+    background-color: var(--app-component-disabled-bg);
+    opacity: 1;
+}
+
+/********** SWEETALERT 2 **********/
+.swal2-styled.swal2-confirm
+{
+    background-color: #2d353c !important;
+}
+.swal2-styled.swal2-confirm:focus
+{
+    box-shadow: 0 0 0 3px #6c757d !important;
+}
+.swal2-styled.swal2-cancel
+{
+    background-color: #FFF !important;
+    color: #000 !important;
+}
+.swal2-timer-progress-bar
+{
+    background-color: #2d353c !important;
+}
+/********** **********/
