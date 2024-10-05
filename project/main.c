@@ -1,12 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-
 
 int main()
 {
-
-        int choix,modif,x=0,num;
+  int choix,modif,x=0,reff=0,found=0;
         char nom[100][20];
         char prenom[100][20];
         char telephone[100];
@@ -23,7 +20,7 @@ int main()
         printf("1. Ajouter une reservation :\n");
         printf("2. Modifier ou supprimer une reservation :\n");
         printf("3. Afficher les details d'une reservation :\n");
-        printf("4. Tri des rÃ©servations :\n");
+        printf("4. Tri des réservations :\n");
         printf("5. Recherche des reservations :\n");
         printf("6. Statistiques :\n");
         printf("7. quitter le programm.\n");
@@ -47,18 +44,24 @@ case 1:
         scanf("%s", &statut[x]);
         printf("la reference est : \n*%d\n", x+10001);
         printf("entrez la date :\n");
-        scanf("%s",date[x]);
+        printf("entrez le joure :\n*");
+        scanf("%d", &joure[x]);
+        printf("entrez le mois :\n*");
+        scanf("%d", &mois[x]);
+        printf("entrez l'annee :\n*");
+        scanf("%d", &anne[x]);
+        printf("la date est:\n*%d/%d/%d",joure[x],mois[x],anne[x]);
         printf("\n\n\t\t\t\t\t****************la reservation est ajoute avec succes !****************\n\n");
         x++;
     break;
 case 2:
-    int ref;
+
          printf("\ntentrez la reference unique de resevation pour modifie:\n*");
          scanf("%d", &ref);
 
     for(int i=0 ; i < x ; i++){
-        if(ref[x]==ref)
-        ref++;
+        if(ref[x]==reff){
+        reff++;}
 
             {
             printf("\t\t***entrez le choix qui vous peveur  *** :\n");
@@ -76,7 +79,7 @@ case 2:
                     scanf("%s",nom[i]);
                     break;
                 case 2:
-                    printf("vous changez ce prenom :*%s*en:\n*",prenom[i]);//j'afficher le prenom qui est y modifie
+                    printf("vous changez ce prenom :*%s*en:\n*",prenom[i]);//j'afficher le prenomqui est y modifie
                     scanf("%s",prenom[i]);
                     break;
                 case 3:
@@ -93,28 +96,19 @@ case 2:
                     found++;
                     break;
            }
-           }else  {
+           }else if ( found == 0) {
            printf("ce reference n existe pas"); }
            }
 
                 case 3:
-                    int sup;
          printf("\n entrez la reference unique de resevation qui vous pouve supprime:\n*");
-         scanf("%d", &sup);
-         int x = 0;
-         for(i = 0; i < num;i++){
-          if(ref[i] == sup){
-                for (int j = i; j < num - 1; j++){
-                    strcpy(nom[j],nom[j + 1]);
-                    strcpy(prenom[j],prenom[j + 1]);
-                    strcpy(statut[j],statut[j + 1]);
-                    strcpy(date[j],date[j + 1]);
-                    strcpy()
-                }
+         scanf("%s", &sup]);
+         for(i = 0; i < x;i++){
+          if(sup == ref[i])==0){
             strcpy(ref[i],ref[x-1]);
 
 
-            printf("\n\t\t**********la reservation est supprimer***************\n");
+            printf("\n\t\t**********la reserve est supprimer***************\n");
             break;
 
          }
@@ -123,79 +117,3 @@ case 2:
            }
            }while(choix !=7) ;
 }
-
-
-
-
-/*
-        printf("\t\t***stock est mis a jour***");
-        found++;
-            break;
-        }
-    }
-    if(found == 0) printf("\n\tlivre non trouve\n");
-
-    break;
-
-case 4:
-
-
-        printf("\n\t***entrez le refer que vous voulez supprimer: \n");
-        scanf("%s", &sup);
-
-    for ( int i = 0; i < x; i++){
-
-        if(strcmp(sup, t[i])==0){
-            strcpy(t[i],t[x-1]);
-            strcpy(a[i],a[x-1]);
-            prix[i]=prix[x-1];
-            quantite[i]=quantite[x-1];
-            x--;
-            found=1;
-            printf("\n\t\t**********le livre est supprimer***************\n");
-            break;
-        }
-    }
-    break;
-
-case 5:
-            found=0;
-            printf("\n\t\tentrez l'auteur : ");
-            scanf("%s", &Rech_a);
-            printf("\n\t\tentrez le titre : ");
-            scanf("%s", &Rech_t);
-            printf("%d :\n", x);
-
-    for ( int i = 0; i < x; i++){
-            printf("%s :  %s :\n", t[i], a[i]);
-        if (strcmp(Rech_t, t[i])==0 && strcmp(Rech_a, a[i])==0){
-            printf("%s\n", t[i]);
-            printf("%s\n", a[i]);
-            printf("%.2f\n", prix[i]);
-            printf("%d\n", quantite[i]);
-            found=1;
-            break;
-        }
-    }
-        if(found==0) printf("\n\t\tle livre n'est pas disponible\n");
-
-    break;
-
-case 6:
-    for(i=0 ; i<x ; i++){
-        f = f + quantite[i];
-    }
-        printf("\n\tle nombre de livres est: \n%d \n", f);
-    break;
-
-case 7:
-        printf("\n\t\tvous avez quittez :\n");
-    return 0;
-
-
-    default :
-        printf("\n\n\t number incorrect. entrez un autre livre");
-}
-}
-    return 0;*/
-

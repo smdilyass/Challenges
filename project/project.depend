@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1727979582 source:c:\users\youcode\desktop\challenges\project\chat.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
